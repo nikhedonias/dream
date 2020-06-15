@@ -1,3 +1,52 @@
-This folder contains current files for DREAM Challenge question 1. The provided files include:
+README
 
-1. The script for data processing, appending, and feature ranking.
+Authors: Dale Kim and Thomas Statchen
+Updated 06/15/2020
+
+***********************************************************************
+CONTENTS
+
+To run the function, download all files in this folder and save to the same directory (this folder contains all .py files necessary). The Box folder contains all the unzipped csv's from the .gz file provided by the DREAM challenge synthetic data and the script. The files required to run the script are (in alphabetical order):
+
+	1. condition_era.csv
+	2. condition_occurrence.csv
+	3. data_dictionary.csv
+	4. dataAppend.py
+	5. dataFinder.py
+	6. device_exposure.csv
+	7. drug_era.csv
+	8. drug_exposure.csv
+	9. exampleScript.py
+	10. goldstandard.csv
+	11. location.csv
+	12. measurement.csv
+	13. observation_period.csv
+	14. observation.csv
+	15. person.csv
+	16. procedure_occurrence.csv
+	17. visit_occurrence.csv
+
+***********************************************************************
+DEPENDENCIES
+
+numpy, pandas, pickle, lightgbm, sklearn are required
+
+time, matplotlib/pyplot are within the code currently for timing and ROC visualization but will likely not be needed for the final code.
+
+***********************************************************************
+RUNNING THE SCRIPT
+
+exampleScript.py should be the only script where the inputs and parameters are controlled. This script processes the data from csv into dataframes and creates dictionaries for ease of appending later on. The script is split into 4 cells:
+	Cell 1: Imports the data from the csv's and formats it into dictionaries for ease of appendage later.
+	Cell 2: Appends features selected by the user and makes a dataframe where each patient and their measurement per selected symptom are listed in each row.
+	Cell 3: LightGBM Regressor is used to rank selected features based on their importance in the dataframe output from Cell 2.
+	Cell 4: Very preliminary model for machine learning. Uses train-test split and (currently) arbitrary parameters to yield an output of outcomes (positive or negative) per patient. A simple ROC calculation yields a score comparing test set and predicted outcome derived from the training set. This cell is mainly there for structural purposes and feature ranking from Cell 3 (possibly adding a recursive feature selection block) will be the primary modeling mechanism. Parameters have not been tuned yet.
+
+The script can also be run all the way through without issue. If the script is run all the way through, time points for each major step using time.perf_counter() are printed in the console, as well as total elapsed time of running the script displayed at the end. Based on our most recent run, the script took approximately 5 minutes to run, with 90% of consumption coming from reading the csv files into pandas dataframes and converting to dictionaries.
+
+***********************************************************************
+INPUTS AND OUTPUTS
+
+Currently, the symptoms appended are arbitrary conditions/measurements chosen for demonstration purposes. Ideally, we would be changing the "symptoms" list in Cell 2 to append as many relevant conditions/measurements as possible to perform a holistic analysis of feature importance. Additionally, we are working on making patient demographic information from the dataset able to be appended as a feature as well. Eventually, our goal is to allow for any feature from the EHR to be used as a feature.
+
+Current outputs of interest include "features," which is a ranked list of important features using LGBM Regressor, and y_pred, which gives the predicted score of the patient outcomes for whether they would diagnose as positive or negative (currently binary but will likely report probabilities to estimate "risk of positivity").
