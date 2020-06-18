@@ -17,8 +17,7 @@ LABEL references="https://www.medrxiv.org/content/10.1101/2020.03.19.20039099v1,
 RUN pip install pandas \
   numpy \
   sklearn \
-  datetime \
-  pickle
+  datetime
 
 # Move to the app folder
 RUN mkdir /app
