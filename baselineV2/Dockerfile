@@ -18,8 +18,7 @@ RUN pip install pandas \
   numpy \
   sklearn \
   datetime \
-  pickle \
-  datetime \
+  pickle
 
 # Move to the app folder
 RUN mkdir /app
